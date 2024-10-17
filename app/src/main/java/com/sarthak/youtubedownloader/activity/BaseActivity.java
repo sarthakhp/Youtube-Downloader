@@ -2,6 +2,8 @@ package com.sarthak.youtubedownloader.activity;
 
 import static java.util.Objects.nonNull;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -22,18 +24,17 @@ public class BaseActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         if (nonNull(toolbar)) {
             setSupportActionBar(toolbar);
+            toolbar.setTitleTextColor(Color.WHITE);
         }
 
         if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayShowTitleEnabled(false);
-            getSupportActionBar().setTitle(title);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
 
-        TextView toolbarTitleTextView = findViewById(R.id.tool_bar_title);
-        if (nonNull(toolbarTitleTextView)) {
-            toolbarTitleTextView.setText(title);
+        if (nonNull(toolbar) && nonNull(toolbar.getNavigationIcon())) {
+            toolbar.getNavigationIcon().setColorFilter(Color.WHITE, PorterDuff.Mode.SRC_ATOP);
         }
+
     }
 }

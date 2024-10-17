@@ -3,7 +3,6 @@ package com.sarthak.youtubedownloader.activity;
 import static java.util.Objects.nonNull;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -25,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.window.OnBackInvokedDispatcher;
 
@@ -40,7 +40,6 @@ import com.sarthak.youtubedownloader.util.JsonUtil;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class MainActivity extends BaseActivity {
 
@@ -49,6 +48,7 @@ public class MainActivity extends BaseActivity {
     private SearchResultAdapter searchResultAdapter;
     private LinearLayout rootLinearLayout;
     private Button searchButton;
+    private ProgressBar loadingCircularBar;
     private static final int REQUEST_PERMISSION_WRITE_EXTERNAL_STORAGE = 1;
 
 
@@ -61,6 +61,7 @@ public class MainActivity extends BaseActivity {
 
         searchBarEditText = findViewById(R.id.searchBar);
         rootLinearLayout = findViewById(R.id.linear_layout_main);
+        loadingCircularBar = findViewById(R.id.search_result_progress_bar);
 
         searchButton = findViewById(R.id.searchButton);
         updateSearchButton(searchBarEditText);
@@ -75,6 +76,15 @@ public class MainActivity extends BaseActivity {
         checkNetworkConnection();
 
         tempTestingOnApplicationLaunch();
+    }
+
+    @Override
+    protected void setupToolbar(String title) {
+        super.setupToolbar(title);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            getSupportActionBar().setDisplayShowHomeEnabled(false);
+        }
     }
 
     @Override
@@ -185,6 +195,7 @@ public class MainActivity extends BaseActivity {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                loadingCircularBar.setVisibility(View.VISIBLE);
                 String query = CommonUtil.resolve(() -> searchBarEditText.getText().toString(), null);
                 if (nonNull(query)) {
                     new SearchTask().execute(searchBarEditText.getText().toString());
@@ -207,6 +218,19 @@ public class MainActivity extends BaseActivity {
                 CommonUtil.toastOnMainThread(MainActivity.this, "No Results found", Toast.LENGTH_LONG);
             }
             updateSearchResultAdapterList(searchResultItems);
+            loadingCircularBar.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            loadingCircularBar.setVisibility(View.GONE);
+        }
+
+        @Override
+        protected void onCancelled(List<SearchResultVideoDetails> searchResultVideoDetails) {
+            super.onCancelled(searchResultVideoDetails);
+            loadingCircularBar.setVisibility(View.GONE);
         }
     }
 
