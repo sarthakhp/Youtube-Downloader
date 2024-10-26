@@ -121,7 +121,7 @@ public class CommonUtil {
     public static String extractVideoIdIfUrl(String url) {
         String videoId = url;
 //        String pattern = "^(?:https?:\\/\\/)?(?:www\\.)?(?:youtube\\.com\\/.*v=|youtu\\.be\\/)([^&\\n?#]+)";
-        String pattern = "^(?:https?:\\/\\/)?(?:www\\.)?(?:youtube\\.com\\/.*(?:v=|shorts/)|youtu\\.be\\/)([^&\\n?#]+)";
+        String pattern = "^(?:https?:\\/\\/)?(?:www|music\\.)?(?:youtube\\.com\\/.*(?:v=|shorts/)|youtu\\.be\\/)([^&\\n?#]+)";
         // Using regex to extract the video ID
         java.util.regex.Pattern compiledPattern = java.util.regex.Pattern.compile(pattern);
         java.util.regex.Matcher matcher = compiledPattern.matcher(url);

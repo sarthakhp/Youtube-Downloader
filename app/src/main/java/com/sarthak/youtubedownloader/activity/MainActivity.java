@@ -3,6 +3,7 @@ package com.sarthak.youtubedownloader.activity;
 import static java.util.Objects.nonNull;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -45,6 +46,7 @@ public class MainActivity extends BaseActivity {
 
     private EditText searchBarEditText;
     private ListView resultsListView;
+    private ConstraintLayout resultViewConstraintLayout;
     private SearchResultAdapter searchResultAdapter;
     private LinearLayout rootLinearLayout;
     private Button searchButton;
@@ -62,6 +64,7 @@ public class MainActivity extends BaseActivity {
         searchBarEditText = findViewById(R.id.searchBar);
         rootLinearLayout = findViewById(R.id.linear_layout_main);
         loadingCircularBar = findViewById(R.id.search_result_progress_bar);
+        resultViewConstraintLayout = findViewById(R.id.search_result_constraint_layout);
 
         searchButton = findViewById(R.id.searchButton);
         updateSearchButton(searchBarEditText);
@@ -111,14 +114,16 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onDataChanged(int listItemCount) {
                 if (listItemCount > 0) {
-                    resultsListView.setVisibility(View.VISIBLE);
+//                    resultsListView.setVisibility(View.VISIBLE);
+                    resultViewConstraintLayout.setVisibility(View.VISIBLE);
                     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
                     getSupportActionBar().setDisplayShowHomeEnabled(true);
                 }
                 else {
                     getSupportActionBar().setDisplayHomeAsUpEnabled(false);
                     getSupportActionBar().setDisplayShowHomeEnabled(false);
-                    resultsListView.setVisibility(View.GONE);
+//                    resultsListView.setVisibility(View.GONE);
+                    resultViewConstraintLayout.setVisibility(View.GONE);
                 }
             }
         });
